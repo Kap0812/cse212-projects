@@ -81,7 +81,7 @@ public static class SetsAndMaps
             }
         }
 
-        eturn degrees;
+        return degrees;
     }
 
 
