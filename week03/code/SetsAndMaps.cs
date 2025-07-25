@@ -22,7 +22,30 @@ public static class SetsAndMaps
     public static string[] FindPairs(string[] words)
     {
         // TODO Problem 1 - ADD YOUR CODE HERE
-        return [];
+        HashSet<string> seen = new HashSet<string>();
+        List<string> resultList = new List<string>();
+
+        foreach (string word in words)
+        {
+            if (word[0] == word[1])
+            {
+                continue;
+            }
+
+            string rev = $"{word[1]}{word[0]}";
+
+            if (seen.Contains(rev))
+            {
+                resultList.Add($"{rev} & {word}");
+                seen.Remove(rev);
+            }
+            else
+            {
+                seen.Add(word);
+            }
+        }
+
+        return resultList.ToArray();
     }
 
     /// <summary>
@@ -43,10 +66,24 @@ public static class SetsAndMaps
         {
             var fields = line.Split(",");
             // TODO Problem 2 - ADD YOUR CODE HERE
+            if (fields.Length < 4)
+            continue;
+
+            string degree = fields[3].Trim();
+
+            if (degrees.ContainsKey(degree))
+            {
+            degrees[degree]++;
+            }
+            else
+            {
+            degrees[degree] = 1;
+            }
         }
 
-        return degrees;
+        eturn degrees;
     }
+
 
     /// <summary>
     /// Determine if 'word1' and 'word2' are anagrams.  An anagram
@@ -67,9 +104,36 @@ public static class SetsAndMaps
     public static bool IsAnagram(string word1, string word2)
     {
         // TODO Problem 3 - ADD YOUR CODE HERE
-        return false;
-    }
+        
+        string clean1 = word1.Replace(" ", "").ToLower();
+        string clean2 = word2.Replace(" ", "").ToLower();
 
+        if (clean1.Length != clean2.Length)
+            return false;
+
+        Dictionary<char, int> counts = new Dictionary<char, int>();
+        foreach (char c in clean1)
+        {
+            if (counts.ContainsKey(c))
+                counts[c]++;
+            else
+                counts[c] = 1;
+        }
+
+        foreach (char c in clean2)
+        {
+            if (counts.ContainsKey(c))
+            {
+                counts[c]--;
+                if (counts[c] < 0)
+                    return false;
+            }
+            else
+            {
+                return false;
+            }
+        }
+    }
     /// <summary>
     /// This function will read JSON (Javascript Object Notation) data from the 
     /// United States Geological Service (USGS) consisting of earthquake data.
