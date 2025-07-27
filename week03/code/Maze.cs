@@ -34,14 +34,16 @@ public class Maze
     {
         // FILL IN CODE
         var currentKey = (_currX, _currY);
-        if (_mazeMap.TryGetValue(currentKey, out bool[]? moves) && moves[0])
+        if (_mazeMap.TryGetValue(currentKey, out bool[] moves) && moves[0])
         {
             _currX--;
         }
         else
         {
             throw new InvalidOperationException("Can't go that way!");
+
         }
+            
     }
 
     /// <summary>

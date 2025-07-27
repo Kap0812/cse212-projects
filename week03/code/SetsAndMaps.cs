@@ -22,21 +22,18 @@ public static class SetsAndMaps
     public static string[] FindPairs(string[] words)
     {
         // TODO Problem 1 - ADD YOUR CODE HERE
-        HashSet<string> seen = new HashSet<string>();
+       HashSet<string> seen = new HashSet<string>();
         List<string> resultList = new List<string>();
 
         foreach (string word in words)
         {
-            if (word[0] == word[1])
-            {
-                continue;
-            }
+            if (word[0] == word[1]) continue;
 
             string rev = $"{word[1]}{word[0]}";
-
+            
             if (seen.Contains(rev))
             {
-                resultList.Add($"{rev} & {word}");
+                resultList.Add($"{word} & {rev}");
                 seen.Remove(rev);
             }
             else
@@ -44,7 +41,7 @@ public static class SetsAndMaps
                 seen.Add(word);
             }
         }
-
+        
         return resultList.ToArray();
     }
 
@@ -59,7 +56,7 @@ public static class SetsAndMaps
     /// </summary>
     /// <param name="filename">The name of the file to read</param>
     /// <returns>fixed array of divisors</returns>
-    public static Dictionary<string, int> SummarizeDegrees(string filename)
+     public static Dictionary<string, int> SummarizeDegrees(string filename)
     {
         var degrees = new Dictionary<string, int>();
         foreach (var line in File.ReadLines(filename))
@@ -73,11 +70,12 @@ public static class SetsAndMaps
 
             if (degrees.ContainsKey(degree))
             {
-            degrees[degree]++;
+                degrees[degree]++;
             }
+
             else
             {
-            degrees[degree] = 1;
+                degrees[degree] = 1;
             }
         }
 
@@ -107,8 +105,8 @@ public static class SetsAndMaps
         
         string clean1 = word1.Replace(" ", "").ToLower();
         string clean2 = word2.Replace(" ", "").ToLower();
-
-        if (clean1.Length != clean2.Length)
+        
+        if (clean1.Length != clean2.Length) 
             return false;
 
         Dictionary<char, int> counts = new Dictionary<char, int>();
@@ -125,14 +123,15 @@ public static class SetsAndMaps
             if (counts.ContainsKey(c))
             {
                 counts[c]--;
-                if (counts[c] < 0)
-                    return false;
+                if (counts[c] == 0)
+                    counts.Remove(c);
             }
             else
             {
                 return false;
             }
         }
+        return counts.Count == 0;
     }
     /// <summary>
     /// This function will read JSON (Javascript Object Notation) data from the 
@@ -165,6 +164,15 @@ public static class SetsAndMaps
         // on those classes so that the call to Deserialize above works properly.
         // 2. Add code below to create a string out each place a earthquake has happened today and its magitude.
         // 3. Return an array of these string descriptions.
-        return [];
+
+        if (featureCollection?.Features == null)
+        { 
+         return Array.Empty<string>();   
+        }
+
+        return featureCollection.Features
+            .Where(f => f.Properties != null)
+            .Select(f => $"Place: {f.Properties.Place}, Magnitude: {f.Properties.Mag}")
+            .ToArray();
     }
 }
